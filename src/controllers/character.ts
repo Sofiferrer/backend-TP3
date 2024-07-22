@@ -1,22 +1,26 @@
 import { v4 as uuidv4 } from "uuid";
-import { createFile, getAll, getByName, readFile } from "../models/character";
+import { createFile, getAll, loadAll, readFile } from "../models/character";
 import { Messages } from "../utils/messages";
 import { Character } from "../utils/types";
 import { validateCharacter } from "../utils/validation";
 
 class CharacterController {
+  async loadCharacters() {
+    loadAll();
+  }
+
   async getCharacters() {
-    const characters = await getAll();
-    const charactersDb = await characters.map((char: Character, index) => ({
-      ...char,
-      index: index,
-      id: uuidv4(),
-    }));
-    return charactersDb;
+    await loadAll();
+    return await getAll();
   }
 
   async getCharacter(name: string) {
-    return await getByName(name);
+    await loadAll();
+    const characters = await getAll();
+    const character = characters.filter((char: Character) =>
+      char.fullName.includes(name)
+    );
+    return character;
   }
 
   async getCharactersByHouse(house: string) {
@@ -31,18 +35,19 @@ class CharacterController {
     //validacion de que sea correcto el formato
     if (typeof validateCharacter(character) === "string") {
       console.log("MISSING_DATA", character);
-      return Messages.MISSING_DATA;
+      return { Error: Messages.MISSING_DATA };
     }
 
-    // const books = readFile();
+    const characters = await getAll();
 
-    character.index = 25;
+    character.index = characters.length;
+    character.id = uuidv4();
 
-    // books.push(book);
+    characters.push(character);
 
-    // createFile(books);
+    createFile(characters);
     console.log("CREATE", character);
-    return "CREADO!";
+    return character;
   }
 }
 

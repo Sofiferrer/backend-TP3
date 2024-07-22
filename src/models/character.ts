@@ -1,45 +1,63 @@
 import { getData } from "../utils/api";
 import { writeFileSync, readFileSync, existsSync } from "node:fs";
 import path from "path";
-import { DB } from "../constants";
+import { v4 as uuidv4 } from "uuid";
+import { Character } from "../utils/types";
 
 class CharacterModel {
   constructor() {}
 
-  async getAll() {
+  async loadAll() {
     const aPath = path.join(__dirname, "../database/db.json");
-    const characters = await getData("characters");
+
     if (!existsSync(aPath)) {
-      console.log("no existe archivo");
-      writeFileSync(aPath, JSON.stringify(characters));
+      const characters = await getData("characters");
+
+      const charactersDb = await characters.map((char: Character, index) => ({
+        ...char,
+        index: index,
+        id: uuidv4(),
+      }));
+
+      writeFileSync(aPath, JSON.stringify(charactersDb));
     }
-    //console.log("personajes en el model", characters);
-    return characters;
   }
+
+  async getAll() {
+    // const aPath = path.join(__dirname, "../database/db.json");
+
+    // if (!existsSync(aPath)) {
+    //   const characters = await getData("characters");
+    //   writeFileSync(aPath, JSON.stringify(characters));
+    //   readFile();
+    // }
+
+    return readFile();
+  }
+
   async getByName(name: string) {
     const character = await getData("characters", "search", name);
     return character;
   }
 
   async createFile(data) {
+    const aPath = path.join(__dirname, "../database/db.json");
     const dataJSON = JSON.stringify(data);
-    writeFileSync(DB, dataJSON);
+
+    writeFileSync(aPath, dataJSON);
   }
 
   async readFile() {
-    if (!existsSync(DB)) {
-      writeFileSync(DB, JSON.stringify([]));
-    }
+    const aPath = path.join(__dirname, "../database/db.json");
+    const charactersJSON = readFileSync(aPath, { encoding: "utf-8" });
+    const charactersJs = JSON.parse(charactersJSON);
 
-    const booksJSON = readFileSync(DB, { encoding: "utf-8" });
-    const booksJs = JSON.parse(booksJSON);
-
-    return booksJs;
+    return charactersJs;
   }
 }
 
 const characters = new CharacterModel();
 
-const { getAll, getByName, createFile, readFile } = characters;
+const { loadAll, getAll, createFile, readFile } = characters;
 
-export { getAll, getByName, createFile, readFile };
+export { loadAll, getAll, createFile, readFile };

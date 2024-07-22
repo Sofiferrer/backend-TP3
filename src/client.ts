@@ -6,24 +6,24 @@ client.on("connect", () => {
   //const mensaje = { path: "characters/name", name: "James" };
   // const mensaje = { path: "characters/house", house: "Slytherin" };
 
-  const msg = {
-    path: "characters",
-    action: "READ",
-  };
   // const msg = {
   //   path: "characters",
-  //   action: "CREATE",
-  //   body: {
-  //     fullName: "Dolores Umbridge",
-  //     hogwartsHouse: "Slytherin",
-  //     interpretedBy: "Imelda Staunton",
-  //     children: [],
-  //     image:
-  //       "https://static.wikia.nocookie.net/esharrypotter/images/d/d2/Dolores_umbridge2.jpg/revision/latest?cb=20150228091708",
-  //     birthdate: "Ene 9, 1956",
-  //     //index: 24,
-  //   },
+  //   action: "READ",
   // };
+  const msg = {
+    path: "characters",
+    action: "CREATE",
+    body: {
+      fullName: "Dolores Umbridge",
+      nickname: "Umbridge",
+      hogwartsHouse: "Slytherin",
+      interpretedBy: "Imelda Staunton",
+      children: [],
+      image:
+        "https://static.wikia.nocookie.net/esharrypotter/images/d/d2/Dolores_umbridge2.jpg/revision/latest?cb=20150228091708",
+      birthdate: "Ene 9, 1956",
+    },
+  };
   // const msg = {
   //   path: "characters/name",
   //   action: "READ",

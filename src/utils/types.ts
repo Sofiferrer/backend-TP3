@@ -6,8 +6,8 @@ interface Character {
   children: string[];
   image: string;
   birthdate: string;
-  index: number;
-  id: string;
+  index?: number;
+  id?: string;
 }
 
 export { Character };

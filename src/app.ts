@@ -16,8 +16,8 @@ export async function routes(message) {
     case "characters":
       if (data.action === "CREATE") {
         const newCharacter = await createCharacter(data.body);
-        //const newCharacterJson = JSON.stringify(newCharacter);
-        return newCharacter;
+        const newCharacterJson = JSON.stringify(newCharacter);
+        return newCharacterJson;
       }
       if (data.action === "READ") {
         const characters = await getCharacters();
