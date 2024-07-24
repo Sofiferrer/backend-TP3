@@ -1,7 +1,7 @@
 import { getBooks, getBooksByNumber } from "./controllers/book";
 import {
   createCharacter,
-  getCharacter,
+  getByName,
   getCharacters,
   getCharactersByHouse,
 } from "./controllers/character";
@@ -36,7 +36,7 @@ export async function routes(message) {
       }
       break;
     case "characters/name":
-      const character = await getCharacter(data.body);
+      const character = await getByName(data.body);
       const characterJson = JSON.stringify(character);
       return characterJson;
       break;

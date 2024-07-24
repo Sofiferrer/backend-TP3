@@ -14,7 +14,7 @@ class CharacterController {
     return await getAll();
   }
 
-  async getCharacter(name: string) {
+  async getByName(name: string) {
     await loadAll();
     const characters = await getAll();
     const character = characters.filter((char: Character) =>
@@ -32,28 +32,33 @@ class CharacterController {
   }
 
   async createCharacter(character: Character) {
-    //validacion de que sea correcto el formato
     if (typeof validateCharacter(character) === "string") {
       console.log("MISSING_DATA", character);
       return { Error: Messages.MISSING_DATA };
     }
 
     const characters = await getAll();
+    const newCharacter = characters.find(
+      (char: Character) => char.fullName === character.fullName
+    );
 
-    character.index = characters.length;
-    character.id = uuidv4();
+    if (!newCharacter) {
+      character.index = characters.length;
+      character.id = uuidv4();
 
-    characters.push(character);
+      characters.push(character);
 
-    createFile(characters);
-    console.log("CREATE", character);
-    return character;
+      createFile(characters);
+      return character;
+    } else {
+      return { Error: Messages.EXISTING_DATA };
+    }
   }
 }
 
 const characters = new CharacterController();
 
-const { getCharacters, getCharacter, getCharactersByHouse, createCharacter } =
+const { getCharacters, getByName, getCharactersByHouse, createCharacter } =
   characters;
 
-export { getCharacters, getCharacter, getCharactersByHouse, createCharacter };
+export { getCharacters, getByName, getCharactersByHouse, createCharacter };

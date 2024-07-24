@@ -24,20 +24,7 @@ class CharacterModel {
   }
 
   async getAll() {
-    // const aPath = path.join(__dirname, "../database/db.json");
-
-    // if (!existsSync(aPath)) {
-    //   const characters = await getData("characters");
-    //   writeFileSync(aPath, JSON.stringify(characters));
-    //   readFile();
-    // }
-
-    return readFile();
-  }
-
-  async getByName(name: string) {
-    const character = await getData("characters", "search", name);
-    return character;
+    return await readFile();
   }
 
   async createFile(data) {
